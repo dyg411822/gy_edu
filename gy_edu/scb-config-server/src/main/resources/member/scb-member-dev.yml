@@ -1,0 +1,100 @@
+server:
+  port: 8811
+
+spring:
+  application:
+    name: scb-member
+
+  jackson:
+    default-property-inclusion: ALWAYS
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+
+  redis:
+    database: 0
+    host: ${REDIS_HOST:localhost}
+    port: ${REDIS_PORT:6379}
+    password: ${REDIS_PASS:321000}
+    timeout: 10000
+
+  rabbitmq:
+    host: ${RABBIT_MQ_HOST:localhost}
+    port: ${RABBIT_MQ_PORT:5672}
+    username: ${RABBIT_MQ_USER:admin}
+    password: ${RABBIT_MQ_PASS:admin}
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${DB_HOST:192.168.1.90}:${DB_PORT:3306}/${DB_NAME:gyjy}?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT%2b8
+    username: ${DB_USER:test}
+    password: ${DB_PASS:test817}
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      initial-size: 1
+      max-active: 20
+      min-idle: 1
+      max-wait: 60000
+      pool-prepared-statements: false
+      validation-query: SELECT 'x'
+      test-on-borrow: false
+      test-on-return: false
+      test-while-idle: true
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 30000
+      max-pool-prepared-statement-per-connection-size: 20
+
+  cloud:
+    consul:
+      host: ${CONSUL_HOST:localhost}
+      port: ${CONSUL_PORT:8500}
+      discovery:
+        healthCheckInterval: 15s
+        instance-id: ${spring.application.name}-${server.port}
+
+  sleuth:
+    sampler:
+      probability: 0.1
+
+mybatis-plus:
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      cors:
+        allowed-origins: "*"
+        allowed-methods: "*"
+
+feign:
+  hystrix:
+    enabled: true
+
+#微信小程序
+#wx:
+#  appid: wx5a229542325d966f
+#  secret: bad2fa118fe6ec90e5008917678b899f
+#  #授权访问地址 get请求
+#  authUrl: https://api.weixin.qq.com/sns/jscode2session?appid=${wx.appid}&secret=${wx.secret}&js_code=%s&grant_type=authorization_code
+#  #接口调用凭证地址 get请求
+#  accessTokenUrl: https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${wx.appid}&secret=${wx.secret}
+#  #生成小程序码（无数量限制地址）post请求
+#  unlimitedUrl: https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=%s
+##（商户）课程体系首页类别展示数目
+#mem-com:
+#  showNum: 3
+#
+## 阿里云短信配置
+#aliyun:
+#  sms:
+#    #模板编码
+#    templateCode: SMS_172735767
+#    #模板参数名称
+#    tempName : code
+#    #短信发送签名
+#    signName: 港誉教育

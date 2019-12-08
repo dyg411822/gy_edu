@@ -1,0 +1,51 @@
+server:
+  port: 8090
+
+spring:
+  application:
+    name: scb-gateway
+
+  jackson:
+    default-property-inclusion: ALWAYS
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+
+  redis:
+    database: 0
+    password: 321000
+    timeout: 10000
+    host: 192.168.1.90
+    port: 6380
+
+  cloud:
+    consul:
+      host: http://localhost
+      port: 8500
+      discovery:
+        healthCheckInterval: 15s
+        instance-id: ${spring.application.name}-${server.port}
+
+    gateway:
+      default-filters:
+      routes:
+        - id:  scb-member
+          uri: lb://scb-member
+          predicates:
+            - Path=/member/**
+          filters:
+            - StripPrefix=1
+        - id:  scb-sys-admin
+          uri: lb://scb-sys-admin
+          predicates:
+            - Path=/sysadmin/**
+          filters:
+            - StripPrefix=1
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      cors:
+        allowed-origins: "*"
+        allowed-methods: "*"

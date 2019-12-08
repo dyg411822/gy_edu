@@ -1,0 +1,73 @@
+server:
+  port: 8090
+
+spring:
+  application:
+    name: scb-gateway
+
+  jackson:
+    default-property-inclusion: ALWAYS
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+
+  redis:
+    database: 0
+    password: 321000
+    timeout: 10000
+    host: localhost
+    port: 6379
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: admin
+    password: admin
+
+  cloud:
+    consul:
+      host: http://localhost
+      port: 8500
+      discovery:
+        healthCheckInterval: 15s
+        instance-id: ${spring.application.name}-${server.port}
+
+    gateway:
+      default-filters:
+      routes:
+        # 会员中心
+        - id: scb-member
+          uri: lb://scb-member
+          predicates:
+            - Path=/member/**
+          filters:
+            - StripPrefix=1
+            - MemberLoginFilter=true
+        # 管理后台
+#        - id:  scb-sysAdmin
+#          uri: lb://scb-sys-admin
+#          predicates:
+#            - Path=/sysadmin/**
+#          filters:
+#            - StripPrefix=1
+        - id: scbx
+          uri: http://localhost:8821
+          predicates:
+            - Path=/sysadmin/api/**
+          filters:
+#            - SwaggerHeaderFilter
+            - SysAdminLoginFilter=true
+            - StripPrefix=1
+            
+
+feign:
+  hystrix:
+    enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      cors:
+        allowed-origins: "*"
+        allowed-methods: "*"

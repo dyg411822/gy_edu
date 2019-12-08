@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: scb-third #服务名称
+  cloud:
+    config:
+      #      uri: http://127.0.0.1:8821 #配置服务的地址 bootstrap.yml
+      uri: http://localhost:8801
+      enabled: true #开启配置
+      profile: prod #版本

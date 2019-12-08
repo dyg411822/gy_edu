@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.scb.sysadmin.dao.UserMapper">
+
+    <!-- 开启二级缓存
+    <cache type="org.mybatis.caches.ehcache.LoggingEhcache"/> -->
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.scb.sysadmin.model.po.User">
+        <id column="id" property="id" />
+        <result column="login_name" property="loginName" />
+        <result column="name" property="name" />
+        <result column="pwd" property="pwd" />
+        <result column="org_id" property="orgId" />
+        <result column="mobile" property="mobile" />
+        <result column="e_mail" property="eMail" />
+        <result column="gmt_create" property="gmtCreate" />
+        <result column="gmt_modified" property="gmtModified" />
+        <result column="enabled" property="enabled" />
+        <result column="created_by" property="createdBy" />
+        <result column="updated_by" property="updatedBy" />
+        <result column="role_id" property="roleId" />
+        <result column="open_id" property="openId" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, login_name, name, pwd, org_id, mobile, e_mail, gmt_create, gmt_modified, enabled, created_by, updated_by, role_id, open_id
+    </sql>
+
+</mapper>

@@ -1,0 +1,33 @@
+server:
+  port: 8801
+
+spring:
+  application:
+    name: scb-config-server
+
+  profiles:
+    # native 设置为本地启动的方式，而不是通过git
+    active: native
+
+  cloud:
+    consul:
+      host: ${CONSUL_HOST:localhost}
+      port: ${CONSUL_PORT:8500}
+      discovery:
+        healthCheckInterval: 15s
+        instance-id: ${spring.application.name}-${server.port}
+
+    config:
+      server:
+        native:
+          searchLocations:
+            - classpath:/gateway
+            - classpath:/sysadmin
+            - classpath:/member
+            - classpath:/third
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

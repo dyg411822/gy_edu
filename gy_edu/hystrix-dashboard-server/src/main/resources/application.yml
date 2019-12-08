@@ -1,0 +1,18 @@
+server:
+  port: 8871
+spring:
+  application:
+    name: hystrix-dashboard-server
+  cloud:
+    consul:
+      host: ${CONSUL_HOST:localhost}
+      port: ${CONSUL_PORT:8500}
+      discovery:
+        healthCheckInterval: 15s
+        instance-id: id-${spring.application.name}
+turbine:
+  app-config: scb-member,scb-sys-admin
+  aggregator:
+    cluster-config: default
+  cluster-name-expression: new String("default")
+  combine-host-port: true
